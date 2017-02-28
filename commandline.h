@@ -41,7 +41,7 @@ commandline<Item>::commandline() {
  */
 template<class Item>
 commandline<Item>::commandline(istream& in) {
-	//myArgv > in;
+	myArgv > in;
 	myArgc = myArgv.size();
 	vector < Item > *myArgv = (vector<Item> *) malloc(sizeof(vector<Item> ));
 	free((void *) myArgv);
@@ -54,7 +54,7 @@ commandline<Item>::commandline(istream& in) {
 template<class Item>
 char* commandline<Item>::getCommand() const {
 	char* cmd;
-	//cmd = myArgv[0];
+	cmd = myArgv[0];
 }
 
 /*getArgCount():
@@ -71,10 +71,11 @@ int commandline<Item>::getArgCount() const {
  */
 template<class Item>
 char** commandline<Item>::getArgVector() const {
-//char ** argv;
-//	for(int i=0; i< myArgv.size()-1,i++){
-//	argv=argv
-//}
+	char ** argv;
+	for (int i = 0; i < myArgv.size() - 1; i++) {
+		argv *= myArgv[i];
+	}
+	return argv;
 }
 
 /*
@@ -84,7 +85,8 @@ char** commandline<Item>::getArgVector() const {
  */
 template<class Item>
 char* commandline<Item>::getArgVector(int i) const {
-	//return myArgv[i];
+	return myArgv[i];
+
 }
 
 /*
