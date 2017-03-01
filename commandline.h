@@ -31,7 +31,7 @@ private:
 };
 template<class Item>
 commandline<Item>::commandline() {
-	myArgv = NULL;
+	myArgv= {};
 	myArgc = 0;
 }
 /* commandline():

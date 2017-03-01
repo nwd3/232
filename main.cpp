@@ -7,7 +7,7 @@
 
 #include "sesnwdShell.h"
 int main() {
-	sesnwdShell myShell();
-	//myShell.run();
+	sesnwdShell myShell;
+	myShell.run();
 }
 

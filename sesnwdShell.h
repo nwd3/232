@@ -9,22 +9,26 @@
 #define SESNWDSHELL_H_
 
 #include <iostream>
-
+#include "commandline.h"
+#include <string>
+#include <vector>
+#include <stdlib.h>
+#include <stdio.h>
 using namespace std;
 
-typedef double Item;
 class sesnwdShell {
 public:
-	sesnwdShell();
+	sesnwdShell() {
+	}
+	sesnwdShell(commandline<char> cmd);
 	sesnwdShell(const sesnwdShell& original);
-	~sesnwdShell();
+
 	void run() {
 
 		cout << "run";
 	}
-
+	commandline<char> myCommandline;
 private:
-
 };
 
 #endif
