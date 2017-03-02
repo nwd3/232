@@ -5,9 +5,8 @@
  *      Author: ses46
  */
 
-#ifndef PATH_H_
-#define PATH_H_
-
+//#ifndef PATH_H_
+//#define PATH_H_
 #include<string.h>
 #include<vector>
 #include<stdio.h>
@@ -19,14 +18,17 @@ public:
 	Path();
 	int find(const string& program) const;
 	string getDirectory(int i) const;
-private:
+	void split(string& s, char delim, vector<string>& out);
 
+private:
+	vector<string> PATH;
+	string pString;
 };
 
 template<class Item>
 Path<Item>::Path() {
-	//do something with getenv()
-	//talk to prof. Norman to get clearer instructions
+	pString = getenv("PATH");
+	split(pString, ':', PATH);
 }
 
 template<class Item>
@@ -39,4 +41,25 @@ int Path<Item>::find(const string& program) const {
 template<class Item>
 string Path<Item>::getDirectory(int i) const {
 	//return the name of the directory at index i
+}
+
+/*
+ * Takes a string, a char, and the vector you want to store the results in
+ * Splits the string every time the delim is found
+ */
+template<class Item>
+void Path<Item>::split(string& s, char delim, vector<string>& out) {
+	int j = 0;
+	for (unsigned i = 0; i < s.length(); i++) {
+		if (s[i] == delim) {
+			s[i] = '\n';
+			out.push_back(s.substr(j, i - j));
+			j = i + 1;
+		}
+	}
+
+	/*	//print out of the vector for debugging
+	 for(unsigned i = 0; i<out.size();i++){
+	 cout<<i<<out[i]<<endl;
+	 }*/
 }
