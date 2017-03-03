@@ -9,18 +9,19 @@
 #define SESNWDSHELL_H_
 
 #include <iostream>
+#include "path.h"
 
 using namespace std;
 
 typedef double Item;
 class sesnwdShell {
 public:
-	sesnwdShell();
+	sesnwdShell(){};
 	sesnwdShell(const sesnwdShell& original);
-	~sesnwdShell();
+	//~sesnwdShell();
 	void run() {
-
-		cout << "run";
+		Path<string> p;
+		cout << "run"<<endl;
 	}
 
 private:

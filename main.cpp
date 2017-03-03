@@ -7,7 +7,9 @@
 
 #include "sesnwdShell.h"
 int main() {
-	sesnwdShell myShell();
-	//myShell.run();
+	cout<<"Starting"<<endl;
+	sesnwdShell myShell;
+	myShell.run();
+	cout<<"done"<<endl;
 }
 
