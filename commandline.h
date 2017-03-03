@@ -6,12 +6,16 @@
 
 #ifndef COMMANDLINE_H_
 #define COMMANDLINE_H_
-
+#include <iostream>
 #include <string>
 #include <vector>
 #include <stdlib.h>
 #include <stdio.h>
+#include <sstream>
+#include <cstring>
+
 using namespace std;
+const int SIZE = 12;
 template<class Item>
 
 class commandline {
@@ -26,14 +30,17 @@ public:
 	char* getArgVector(int i) const;
 	bool noAmpersand() const;
 private:
-	vector<Item> myArgv;
+
+	char * myArgv[];
 	int myArgc;
+	friend class sesnwdShell;
 };
 template<class Item>
 commandline<Item>::commandline() {
-	myArgv = NULL;
+	*myArgv = new char[SIZE];
 	myArgc = 0;
 }
+
 /* commandline():
  * constructs the commandline by
  * reading a commandline from in, parsing it and building instance variables for argc and argv.
@@ -41,10 +48,18 @@ commandline<Item>::commandline() {
  */
 template<class Item>
 commandline<Item>::commandline(istream& in) {
-	myArgv > in;
-	myArgc = myArgv.size();
+	string word;
+	getline(in, word);
+	istringstream iss(word);
+	int i = 0;
+	while (iss >> word) {
+		myArgv[i] = strdup(word.c_str()); //from online ref
+		i += 1;
+	}
+	myArgc = i;
 	vector < Item > *myArgv = (vector<Item> *) malloc(sizeof(vector<Item> ));
 	free((void *) myArgv);
+
 }
 
 /* getCommand():
@@ -55,6 +70,7 @@ template<class Item>
 char* commandline<Item>::getCommand() const {
 	char* cmd;
 	cmd = myArgv[0];
+	return cmd;
 }
 
 /*getArgCount():
@@ -72,8 +88,8 @@ int commandline<Item>::getArgCount() const {
 template<class Item>
 char** commandline<Item>::getArgVector() const {
 	char ** argv;
-	for (int i = 0; i < myArgv.size() - 1; i++) {
-		argv *= myArgv[i];
+	for (int i = 0; i < myArgc - 1; i++) {
+		argv *= *myArgv[i];
 	}
 	return argv;
 }
@@ -85,7 +101,7 @@ char** commandline<Item>::getArgVector() const {
  */
 template<class Item>
 char* commandline<Item>::getArgVector(int i) const {
-	return myArgv[i];
+	return *myArgv[i];
 
 }
 
@@ -95,8 +111,9 @@ char* commandline<Item>::getArgVector(int i) const {
  */
 template<class Item>
 bool commandline<Item>::noAmpersand() const {
-	for (int i = 0; i < myArgv.size() - 1; i++) {
-		if (myArgv[i] == '&') {
+	for (int i = 0; i < myArgc - 1; i++) {
+		char * s = "&";
+		if (!strcmp(myArgv[i], s)) {
 			return true;
 		} else {
 			return false;
