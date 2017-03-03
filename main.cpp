@@ -9,5 +9,7 @@
 int main() {
 	sesnwdShell myShell;
 	myShell.run();
+	cout << "Starting" << endl;
+
 }
 
