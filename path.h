@@ -43,11 +43,13 @@ template<class Item>
 int Path<Item>::find(const string& program) const { //TODO See if I need to do anything with mem
 	DIR *dir;
 	struct dirent *ent;
+	cout << program<<endl;
 	for (unsigned i = 0; i < PATH.size(); i++) {
 		if ((dir = opendir(PATH[i].c_str())) != NULL) {
 			/* print all the files and directories within directory */
 			while ((ent = readdir(dir)) != NULL) {
 				if (ent->d_name == program) {
+//					cout<< i<<endl;
 					return i;
 				}
 			}

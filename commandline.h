@@ -32,12 +32,14 @@ public:
 private:
 
 	char * myArgv[];
+//	vector<string> myArgv;
 	int myArgc;
+;
 	friend class sesnwdShell;
 };
 template<class Item>
 commandline<Item>::commandline() {
-	*myArgv = new char[SIZE];
+//	*myArgv = new char[SIZE];
 	myArgc = 0;
 }
 
@@ -48,6 +50,7 @@ commandline<Item>::commandline() {
  */
 template<class Item>
 commandline<Item>::commandline(istream& in) {
+
 	string word;
 	getline(in, word);
 	istringstream iss(word);
@@ -57,9 +60,8 @@ commandline<Item>::commandline(istream& in) {
 		i += 1;
 	}
 	myArgc = i;
-	vector < Item > *myArgv = (vector<Item> *) malloc(sizeof(vector<Item> ));
-	free((void *) myArgv);
-
+/*	vector < Item > *myArgv = (vector<Item> *) malloc(sizeof(vector<Item> ));
+	free((void *) myArgv);*/
 }
 
 /* getCommand():
@@ -68,8 +70,11 @@ commandline<Item>::commandline(istream& in) {
  */
 template<class Item>
 char* commandline<Item>::getCommand() const {
-	char* cmd;
-	cmd = myArgv[0];
+	char *cmd=new char[100];
+	cmd= myArgv[0];
+/*//	cout<<myArgv[1]<<endl;
+//	string cmd;
+	*cmd = myArgv[0][0u];*/
 	return cmd;
 }
 

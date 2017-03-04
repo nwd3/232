@@ -29,6 +29,8 @@ public:
 			Path < string > p;
 			commandline<char> cmd;
 			cmd = commandline<char>(cin);
+			cout<<cmd.getCommand()<<endl;
+			p.find(cmd.getCommand());
 			//execve(p.getpath(), cmd.getCommand(), p.pString);
 		}
 	}

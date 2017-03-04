@@ -30,7 +30,7 @@ Prompt<Item>::Prompt() {
 	char buffer[PATH_MAX];
 	string currentDir;
 	currentDir = getcwd(buffer, PATH_MAX); //from reference
-	prompt = currentDir;
+	prompt = currentDir+"/$";
 
 }
 
