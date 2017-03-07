@@ -50,18 +50,29 @@ commandline<Item>::commandline() {
  */
 template<class Item>
 commandline<Item>::commandline(istream& in) {
-
 	string word;
 	getline(in, word);
-	istringstream iss(word);
+/*	istringstream iss(word);
 	int i = 0;
 	while (iss >> word) {
 		myArgv[i] = strdup(word.c_str()); //from online ref
 		i += 1;
 	}
 	myArgc = i;
-/*	vector < Item > *myArgv = (vector<Item> *) malloc(sizeof(vector<Item> ));
+	vector < Item > *myArgv = (vector<Item> *) malloc(sizeof(vector<Item> ));
 	free((void *) myArgv);*/
+	int j = 0;
+	int k = 0;
+	for(unsigned i = 0; i<word.size();i++){
+		if(word[i]==' '){
+			char* sub = new char(j+i+1);
+			for (unsigned l = 0; l<i; l++){
+				sub[l] = word[j++];
+			}
+			sub = sub +'\0';
+			myArgv[k++] = sub;
+		}
+	}
 }
 
 /* getCommand():
@@ -70,11 +81,11 @@ commandline<Item>::commandline(istream& in) {
  */
 template<class Item>
 char* commandline<Item>::getCommand() const {
-	char *cmd=new char[100];
+	char *cmd;
 	cmd= myArgv[0];
-/*//	cout<<myArgv[1]<<endl;
+//	cout<<myArgv[1]<<endl;
 //	string cmd;
-	*cmd = myArgv[0][0u];*/
+	*cmd = myArgv[0][0u];
 	return cmd;
 }
 

@@ -43,13 +43,18 @@ template<class Item>
 int Path<Item>::find(const string& program) const { //TODO See if I need to do anything with mem
 	DIR *dir;
 	struct dirent *ent;
-	cout << program<<endl;
+	string s;
+	for(unsigned i = 0; i<program.size(); i++){
+		if(!(((int)program[i]>=65&&(int)program[i]<=90)||((int)program[i]>=97&&(int)program[i]<=122))){
+			s=program.substr(0,i);
+			break;
+		}
+	}
 	for (unsigned i = 0; i < PATH.size(); i++) {
 		if ((dir = opendir(PATH[i].c_str())) != NULL) {
 			/* print all the files and directories within directory */
 			while ((ent = readdir(dir)) != NULL) {
-				if (ent->d_name == program) {
-//					cout<< i<<endl;
+				if (ent->d_name == s) {
 					return i;
 				}
 			}
@@ -72,6 +77,7 @@ string Path<Item>::getDirectory(int i) const {
  * Takes a string, a char, and the vector you want to store the results in
  * Splits the string every time the delim is found
  */
+
 template<class Item>
 void Path<Item>::split(string& s, char delim, vector<string>& out) {
 	int j = 0;
@@ -83,8 +89,10 @@ void Path<Item>::split(string& s, char delim, vector<string>& out) {
 		}
 	}
 
+
 	/*	//print out of the vector for debugging
 	 for(unsigned i = 0; i<out.size();i++){
 	 cout<<i<<out[i]<<endl;
 	 }*/
 }
+
