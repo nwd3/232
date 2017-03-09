@@ -40,15 +40,7 @@ public:
 					break;
 			int index=p.find(com);
 			string path=p.getDirectory(index)+'/'+com;
-//			char *chcom=new char[cmd.getArgCount()+1]();
-//			for(int i = 0; i<cmd.getArgCount(); i++){
-//				stpcpy(chcom, cmd.getArgVector(i));
-//				cout<<chcom[i]<<endl;
-//			}
-//			chcom[cmd.getArgCount()]='\0';
-			char **chcom = cmd.getArgVector();
-//			cout<<"execv\n"<<path<<endl;
-			execv(path.c_str(),chcom);
+			execv(path.c_str(),cmd.getArgVector());
 			cout<<strerror(errno)<<endl;
 			//execve(p.getPath[path], cmd.getCommand(), p.pString);
 		}
