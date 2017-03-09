@@ -24,23 +24,27 @@ class commandline {
 public:
 	commandline();
 	commandline(istream& in);
+
 	char* getCommand() const;
 	int getArgCount() const;
 	char** getArgVector() const;
 	char* getArgVector(int i) const;
 	bool noAmpersand() const;
+	void copy(vector<string>& s);
+	bool isAmpersand;
+	~commandline();
 private:
 
-	char * myArgv[];
-//	vector<string> myArgv;
+	char** myArgv;
 	int myArgc;
-;
+	//;
 	friend class sesnwdShell;
 };
 template<class Item>
 commandline<Item>::commandline() {
-//	*myArgv = new char[SIZE];
 	myArgc = 0;
+	isAmpersand = false;
+	myArgv = NULL;
 }
 
 /* commandline():
@@ -52,27 +56,39 @@ template<class Item>
 commandline<Item>::commandline(istream& in) {
 	string word;
 	getline(in, word);
-/*	istringstream iss(word);
+	istringstream iss(word);
+	vector < string > tempvec;
+	string word2;
 	int i = 0;
-	while (iss >> word) {
-		myArgv[i] = strdup(word.c_str()); //from online ref
+	while (iss >> word2) {
+		if (word2 == "&" && i == 0) {
+			isAmpersand = true;
+			cout << "is ampersand" << flush;
+		}
 		i += 1;
+		tempvec.push_back(word2);
 	}
 	myArgc = i;
-	vector < Item > *myArgv = (vector<Item> *) malloc(sizeof(vector<Item> ));
-	free((void *) myArgv);*/
-	int j = 0;
-	int k = 0;
-	for(unsigned i = 0; i<word.size();i++){
-		if(word[i]==' '){
-			char* sub = new char(j+i+1);
-			for (unsigned l = 0; l<i; l++){
-				sub[l] = word[j++];
-			}
-			sub = sub +'\0';
-			myArgv[k++] = sub;
-		}
+	copy (tempvec);
+
+}
+template<class Item>
+void commandline<Item>::copy(vector<string>& s) {
+	myArgv = (char**) malloc(sizeof(char*) * (s.size() + 1)); //s.size() + 1)
+	for (int i = 0; i < myArgc - 1; i++) {
+		string temp = s[i];
+		myArgv[i] = (char*) malloc(sizeof(temp) + 1);
+		strcpy(myArgv[i], temp.c_str());
 	}
+	myArgv[myArgc] = NULL;
+
+}
+template<class Item>
+commandline<Item>::~commandline() {
+//	for (int i = 0; i < myArgc - 1; i++) {
+//		free(myArgv[i]);
+//	}
+	//free(myArgv);
 }
 
 /* getCommand():
@@ -81,12 +97,8 @@ commandline<Item>::commandline(istream& in) {
  */
 template<class Item>
 char* commandline<Item>::getCommand() const {
-	char *cmd;
-	cmd= myArgv[0];
-//	cout<<myArgv[1]<<endl;
-//	string cmd;
-	*cmd = myArgv[0][0u];
-	return cmd;
+	char* ptr = myArgv[0];
+	return ptr;
 }
 
 /*getArgCount():
@@ -103,11 +115,8 @@ int commandline<Item>::getArgCount() const {
  */
 template<class Item>
 char** commandline<Item>::getArgVector() const {
-	char ** argv;
-	for (int i = 0; i < myArgc - 1; i++) {
-		argv *= *myArgv[i];
-	}
-	return argv;
+
+	return myArgv;
 }
 
 /*
@@ -117,7 +126,7 @@ char** commandline<Item>::getArgVector() const {
  */
 template<class Item>
 char* commandline<Item>::getArgVector(int i) const {
-	return *myArgv[i];
+	return myArgv[i];
 
 }
 
@@ -127,14 +136,7 @@ char* commandline<Item>::getArgVector(int i) const {
  */
 template<class Item>
 bool commandline<Item>::noAmpersand() const {
-	for (int i = 0; i < myArgc - 1; i++) {
-		char * s = "&";
-		if (!strcmp(myArgv[i], s)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+	return isAmpersand;
 }
 
 #endif /*COMMANDLINE_H_*/
