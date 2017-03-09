@@ -7,7 +7,8 @@
 //http://stackoverflow.com/questions/10068327/what-does-execve-do
 #ifndef SESNWDSHELL_H_
 #define SESNWDSHELL_H_
-
+//very important
+//http://stackoverflow.com/questions/2300581/how-do-you-fill-an-array-with-strings-in-c
 #include <iostream>
 #include <fstream>
 #include <iostream>
@@ -21,7 +22,6 @@ public:
 	sesnwdShell() {
 	}
 	sesnwdShell(const sesnwdShell& original);
-	//~sesnwdShell();
 	void run() {
 		while (1) { //this works well we just cntrl c out
 			Prompt < string > prompt;
@@ -29,9 +29,12 @@ public:
 			Path < string > p;
 			commandline<char> cmd;
 			cmd = commandline<char>(cin);
-			cout<<cmd.getCommand()<<endl;
+			cmd.getCommand();
+			//no segmentation fault
 			p.find(cmd.getCommand());
-			//execve(p.getpath(), cmd.getCommand(), p.pString);
+			//int path = p.find(cmd.getCommand());
+			//cout << path << flush;
+			//execve(p.getPath[path], cmd.getCommand(), p.pString);
 		}
 	}
 
