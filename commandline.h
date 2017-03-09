@@ -75,7 +75,7 @@ commandline<Item>::commandline(istream& in) {
 template<class Item>
 void commandline<Item>::copy(vector<string>& s) {
 	myArgv = (char**) malloc(sizeof(char*) * (s.size() + 1)); //s.size() + 1)
-	for (int i = 0; i < myArgc - 1; i++) {
+	for (int i = 0; i < myArgc; i++) {
 		string temp = s[i];
 		myArgv[i] = (char*) malloc(sizeof(temp) + 1);
 		strcpy(myArgv[i], temp.c_str());

@@ -24,14 +24,15 @@ public:
 	void split(string& s, char delim, vector<string>& out);
 
 private:
-	vector<string> PATH;
+	vector<string>* PATH;
 	string pString;
 };
 
 template<class Item>
 Path<Item>::Path() {
 	pString = getenv("PATH");
-	split(pString, ':', PATH);
+	PATH=(vector<string>*)malloc(pString.size());
+	split(pString, ':', *PATH);
 }
 /*
  *  return the index(of path vector) of the directory containing program
@@ -44,29 +45,25 @@ int Path<Item>::find(const string& program) const { //TODO See if I need to do a
 	DIR *dir;
 	struct dirent *ent;
 	string s;
-	for(unsigned i = 0; i<program.size(); i++){
-		if(!(((int)program[i]>=65&&(int)program[i]<=90)||((int)program[i]>=97&&(int)program[i]<=122))){
-			s=program.substr(0,i);
-			break;
-		}
-	}
-	for (unsigned i = 0; i < PATH.size(); i++) {
-		if ((dir = opendir(PATH[i].c_str())) != NULL) {
+	for (unsigned i = 0; i < PATH->size(); i++) {
+		string temp = PATH->at(i);
+		if ((dir = opendir(temp.c_str())) != NULL) {
 			/* print all the files and directories within directory */
 			while ((ent = readdir(dir)) != NULL) {
-				if (ent->d_name == s) {
+				if (ent->d_name == program) {
 					return i;
 				}
 			}
 			closedir(dir);
 		}
 	}
+	cout<<"Failed to find: "<<program<<endl;
 	return -1;
 }
 
 template<class Item>
 string Path<Item>::getDirectory(int i) const {
-	return PATH[i];
+	return PATH->at(i);
 }
 //template<class Item>
 //string Path<Item>::getpath() const {

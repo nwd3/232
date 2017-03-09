@@ -12,9 +12,13 @@
 #include <iostream>
 #include <fstream>
 #include <iostream>
+#include <unistd.h>
 #include "path.h"
 #include "commandline.h"
 #include "prompt.h"
+
+
+#include <errno.h>
 using namespace std;
 
 class sesnwdShell {
@@ -29,11 +33,23 @@ public:
 			Path < string > p;
 			commandline<char> cmd;
 			cmd = commandline<char>(cin);
-			cmd.getCommand();
+			vector<string> arg;
+			string com = cmd.getCommand();
 			//no segmentation fault
-			p.find(cmd.getCommand());
-			//int path = p.find(cmd.getCommand());
-			//cout << path << flush;
+			if(com=="exit")
+					break;
+			int index=p.find(com);
+			string path=p.getDirectory(index)+'/'+com;
+//			char *chcom=new char[cmd.getArgCount()+1]();
+//			for(int i = 0; i<cmd.getArgCount(); i++){
+//				stpcpy(chcom, cmd.getArgVector(i));
+//				cout<<chcom[i]<<endl;
+//			}
+//			chcom[cmd.getArgCount()]='\0';
+			char **chcom = cmd.getArgVector();
+//			cout<<"execv\n"<<path<<endl;
+			execv(path.c_str(),chcom);
+			cout<<strerror(errno)<<endl;
 			//execve(p.getPath[path], cmd.getCommand(), p.pString);
 		}
 	}
