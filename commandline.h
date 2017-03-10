@@ -85,10 +85,10 @@ void commandline<Item>::copy(vector<string>& s) {
 }
 template<class Item>
 commandline<Item>::~commandline() {
-//	for (int i = 0; i < myArgc - 1; i++) {
-//		free(myArgv[i]);
-//	}
-	//free(myArgv);
+	for (int i = 0; i < myArgc - 1; i++) {
+		free(myArgv[i]);
+	}
+//	free(myArgv);
 }
 
 /* getCommand():
