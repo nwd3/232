@@ -31,6 +31,9 @@ public:
 	char* getArgVector(int i) const;
 	bool noAmpersand() const;
 	void copy(vector<string>& s);
+
+	void print();
+
 	bool ampersand;
 	~commandline();
 private:
@@ -84,11 +87,19 @@ void commandline<Item>::copy(vector<string>& s) {
 	myArgv[myArgc] = NULL;
 
 }
+
+template<class Item>
+void commandline<Item>::print() {
+	for(unsigned i = 0; i<myArgc; i++){
+		cout<<i<<"\t"<<myArgv[i]<<endl;
+	}
+}
+
 template<class Item>
 commandline<Item>::~commandline() {
-	for (int i = 0; i < myArgc - 1; i++) {
-		free(myArgv[i]);
-	}
+//	for (int i = 0; i < myArgc - 1; i++) {
+//		free(myArgv[i]);
+//	}
 //	free(myArgv);
 }
 

@@ -20,6 +20,7 @@ class Prompt {
 public:
 	Prompt();
 	string get() const;
+	void set(const string &p);
 private:
 	string prompt;
 
@@ -30,7 +31,7 @@ Prompt<Item>::Prompt() {
 	char buffer[PATH_MAX];
 	string currentDir;
 	currentDir = getcwd(buffer, PATH_MAX); //from reference
-	prompt = currentDir+"/$";
+	prompt = currentDir+"/$ ";
 
 }
 
@@ -39,4 +40,8 @@ string Prompt<Item>::get() const {
 	return prompt;
 }
 
+template<class Item>
+void Prompt<Item>::set(const string &p) {
+	prompt = p+"$ ";
+}
 #endif

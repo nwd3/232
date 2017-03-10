@@ -31,18 +31,22 @@ public:
 		commandline<char> cmd;
 		Path < string > p;
 		while (1) {
-
 			Prompt < string > prompt;
 			cout << prompt.get();
 
 			cmd = commandline<char>(cin);
 			vector < string > arg;
 			string com = cmd.getCommand();
-
+//			cmd.print();
 			if (com == "exit")
 				break;
 			if (com == "cd") {
-
+				if(cmd.getArgCount()<2){
+					chdir(getenv("HOME"));
+				}else{
+					chdir(cmd.getArgVector(1));
+				}
+//				cout << strerror(errno) << endl;
 			} else if (cmd.ampersand == true) {
 				pid_t child_pid;
 				int index = p.find(com);
