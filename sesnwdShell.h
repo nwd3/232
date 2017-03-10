@@ -29,25 +29,25 @@ public:
 	sesnwdShell(const sesnwdShell& original);
 	void run() {
 		commandline<char> cmd;
-		Path < string > p;
+		Path<string> p;
 		while (1) {
-			Prompt < string > prompt;
+			Prompt<string> prompt;
 			cout << prompt.get();
 
 			cmd = commandline<char>(cin);
-			vector < string > arg;
+			vector<string> arg;
 			string com = cmd.getCommand();
 //			cmd.print();
 			if (com == "exit")
 				break;
 			if (com == "cd") {
-				if(cmd.getArgCount()<2){
+				if (cmd.getArgCount() < 2) {
 					chdir(getenv("HOME"));
-				}else{
+				} else {
 					chdir(cmd.getArgVector(1));
 				}
 //				cout << strerror(errno) << endl;
-			} else if (cmd.ampersand == true) {
+			} else /*if (cmd.ampersand == true) */{
 				pid_t child_pid;
 				int index = p.find(com);
 				string path = p.getDirectory(index) + '/' + com;
@@ -57,12 +57,11 @@ public:
 				if (child_pid == 0) {
 					execve(path.c_str(), cmd.getArgVector(), NULL);
 				}
-				while (wait(NULL) > 0) {
+				if (cmd.ampersand) {
+					while (wait(NULL) > 0) {
+					}
 				}
-			} else {
-
-			}
-			//cout << strerror(errno) << endl;
+			} 			//cout << strerror(errno) << endl;
 			//execve(p.getPath[path], cmd.getCommand(), p.pString);
 		}
 		//run();

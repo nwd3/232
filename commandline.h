@@ -61,19 +61,21 @@ commandline<Item>::commandline(istream& in) {
 	string word;
 	getline(in, word);
 	istringstream iss(word);
-	vector < string > tempvec;
+	vector<string> tempvec;
 	string word2;
 	int i = 0;
 	while (iss >> word2) {
 		if (word2 == "&") {
 			ampersand = false;
-			cout << "is ampersand" << flush;
+			cout << "is ampersand" << endl;
+//			cout<<word2<<endl;
+		} else {
+			i += 1;
+			tempvec.push_back(word2);
 		}
-		i += 1;
-		tempvec.push_back(word2);
 	}
 	myArgc = i;
-	copy (tempvec);
+	copy(tempvec);
 
 }
 template<class Item>
@@ -90,8 +92,8 @@ void commandline<Item>::copy(vector<string>& s) {
 
 template<class Item>
 void commandline<Item>::print() {
-	for(unsigned i = 0; i<myArgc; i++){
-		cout<<i<<"\t"<<myArgv[i]<<endl;
+	for (unsigned i = 0; i < myArgc; i++) {
+		cout << i << "\t" << myArgv[i] << endl;
 	}
 }
 
