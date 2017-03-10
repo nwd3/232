@@ -17,7 +17,8 @@
 #include "path.h"
 #include "commandline.h"
 #include "prompt.h"
-
+#include <sys/wait.h>
+#include <stdio.h>
 #include <errno.h>
 using namespace std;
 
@@ -28,29 +29,35 @@ public:
 	sesnwdShell(const sesnwdShell& original);
 	void run() {
 		commandline<char> cmd;
+		Path < string > p;
+		while (1) {
 
-		while (1) { //this works well we just cntrl c out
-			//	int ret = fork();
 			Prompt < string > prompt;
-			cout << prompt.get() << endl;
-			Path < string > p;
+			cout << prompt.get();
 
 			cmd = commandline<char>(cin);
 			vector < string > arg;
 			string com = cmd.getCommand();
-			//no segmentation fault
+
 			if (com == "exit")
 				break;
-			pid_t child_pid;
-			int index = p.find(com);
-			string path = p.getDirectory(index) + '/' + com;
+			if (com == "cd") {
 
-			child_pid = fork();
-			int child_status;
-			if (child_pid == 0) {
-				execv(path.c_str(), cmd.getArgVector());
+			} else if (cmd.ampersand == true) {
+				pid_t child_pid;
+				int index = p.find(com);
+				string path = p.getDirectory(index) + '/' + com;
+
+				child_pid = fork();
+				int child_status;
+				if (child_pid == 0) {
+					execve(path.c_str(), cmd.getArgVector(), NULL);
+				}
+				while (wait(NULL) > 0) {
+				}
+			} else {
+
 			}
-
 			//cout << strerror(errno) << endl;
 			//execve(p.getPath[path], cmd.getCommand(), p.pString);
 		}
@@ -59,6 +66,7 @@ public:
 
 private:
 
-};
+}
+;
 
 #endif
