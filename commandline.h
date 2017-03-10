@@ -31,7 +31,7 @@ public:
 	char* getArgVector(int i) const;
 	bool noAmpersand() const;
 	void copy(vector<string>& s);
-	bool isAmpersand;
+	bool ampersand;
 	~commandline();
 private:
 
@@ -43,7 +43,7 @@ private:
 template<class Item>
 commandline<Item>::commandline() {
 	myArgc = 0;
-	isAmpersand = false;
+	ampersand = true;
 	myArgv = NULL;
 }
 
@@ -54,6 +54,7 @@ commandline<Item>::commandline() {
  */
 template<class Item>
 commandline<Item>::commandline(istream& in) {
+	ampersand = true;
 	string word;
 	getline(in, word);
 	istringstream iss(word);
@@ -61,8 +62,8 @@ commandline<Item>::commandline(istream& in) {
 	string word2;
 	int i = 0;
 	while (iss >> word2) {
-		if (word2 == "&" && i == 0) {
-			isAmpersand = true;
+		if (word2 == "&") {
+			ampersand = false;
 			cout << "is ampersand" << flush;
 		}
 		i += 1;
@@ -136,7 +137,7 @@ char* commandline<Item>::getArgVector(int i) const {
  */
 template<class Item>
 bool commandline<Item>::noAmpersand() const {
-	return isAmpersand;
+	return ampersand;
 }
 
 #endif /*COMMANDLINE_H_*/
