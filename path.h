@@ -1,12 +1,14 @@
 /*
  * path.h
- *
- *  Created on: Feb 28, 2017
- *      Author: ses46
+ * Created on: Feb 27, 2017
+ * Project 3: A Command Shell
+ * Author: Steve Sykora
+ * this class creates a Path class that creates a path to the directory
+ * References:some online references
  */
 
 //#ifndef PATH_H_
-//#define PATH_H_
+#define PATH_H_
 #include<string.h>
 #include<vector>
 #include<stdio.h>
@@ -22,17 +24,29 @@ public:
 	string getDirectory(int i) const;
 	string getpath() const;
 	void split(string& s, char delim, vector<string>& out);
-
+	~Path();
 private:
+	//private variables
 	vector<string>* PATH;
 	string pString;
 };
-
+/*
+ * Path(), a default constructor
+ * default constructor mallocs space for the path
+ * and constructs path variables
+ */
 template<class Item>
 Path<Item>::Path() {
 	pString = getenv("PATH");
-	PATH=(vector<string>*)malloc(pString.size());
+	PATH = (vector<string>*) malloc(pString.size() + 10000);
 	split(pString, ':', *PATH);
+}
+/**
+ * destructor dletes path pointer
+ */
+template<class Item>
+Path<Item>::~Path() {
+	delete[] PATH;
 }
 /*
  *  return the index(of path vector) of the directory containing program
@@ -42,11 +56,14 @@ Path<Item>::Path() {
 
 template<class Item>
 int Path<Item>::find(const string& program) const { //TODO See if I need to do anything with mem
+//define variables
 	DIR *dir;
 	struct dirent *ent;
 	string s;
+	//loops through
 	for (unsigned i = 0; i < PATH->size(); i++) {
 		string temp = PATH->at(i);
+		//if directory is valid
 		if ((dir = opendir(temp.c_str())) != NULL) {
 			/* print all the files and directories within directory */
 			while ((ent = readdir(dir)) != NULL) {
@@ -54,21 +71,24 @@ int Path<Item>::find(const string& program) const { //TODO See if I need to do a
 					return i;
 				}
 			}
+			//then close directory
 			closedir(dir);
 		}
 	}
-	cout<<"Failed to find: "<<program<<endl;
 	return -1;
+
 }
+
+/*
+ * getDirectory()
+ * @param i, an int
+ * returns a string at the index i
+ */
 
 template<class Item>
 string Path<Item>::getDirectory(int i) const {
 	return PATH->at(i);
 }
-//template<class Item>
-//string Path<Item>::getpath() const {
-//	return PATH;
-//}
 
 /*
  * Takes a string, a char, and the vector you want to store the results in
@@ -85,11 +105,5 @@ void Path<Item>::split(string& s, char delim, vector<string>& out) {
 			j = i + 1;
 		}
 	}
-
-
-	/*	//print out of the vector for debugging
-	 for(unsigned i = 0; i<out.size();i++){
-	 cout<<i<<out[i]<<endl;
-	 }*/
 }
 
