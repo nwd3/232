@@ -1,21 +1,19 @@
 /* commandline.h
- * Student Name:Nathanael Dick/nwd3
- * Date:February 27, 2017
+ * Created on: Feb 27, 2017
+ * Project 3: A Command Shell
+ * Author:Nathanael Dick, Steve Sykora
  * this class defines the commandline class which generates a commandline
+ * References:some online references
  */
 
 #ifndef COMMANDLINE_H_
 #define COMMANDLINE_H_
-#include <iostream>
-#include <string>
-#include <vector>
-#include <stdlib.h>
-#include <stdio.h>
+
+//included
 #include <sstream>
-#include <cstring>
 
 using namespace std;
-const int SIZE = 12;
+
 template<class Item>
 
 class commandline {
@@ -24,23 +22,18 @@ class commandline {
 public:
 	commandline();
 	commandline(istream& in);
-
 	char* getCommand() const;
 	int getArgCount() const;
 	char** getArgVector() const;
 	char* getArgVector(int i) const;
 	bool noAmpersand() const;
 	void copy(vector<string>& s);
-
 	void print();
-
 	bool ampersand;
 	~commandline();
 private:
-
 	char** myArgv;
 	int myArgc;
-	//;
 	friend class sesnwdShell;
 };
 template<class Item>
@@ -61,47 +54,58 @@ commandline<Item>::commandline(istream& in) {
 	string word;
 	getline(in, word);
 	istringstream iss(word);
-	vector<string> tempvec;
+	vector < string > tempvec;
 	string word2;
 	int i = 0;
+
+	//while input read
 	while (iss >> word2) {
+		//check if there is an ampersand
 		if (word2 == "&") {
 			ampersand = false;
-			cout << "is ampersand" << endl;
-//			cout<<word2<<endl;
+
+			//if no ampersand add to vector
 		} else {
 			i += 1;
 			tempvec.push_back(word2);
 		}
 	}
+
+	//set myArgc
 	myArgc = i;
-	copy(tempvec);
+
+	//call copy to create myArgv
+	copy (tempvec);
 
 }
 template<class Item>
 void commandline<Item>::copy(vector<string>& s) {
+
+	//allocate size for myArgv
 	myArgv = (char**) malloc(sizeof(char*) * (s.size() + 1)); //s.size() + 1)
+	//add input to argv
 	for (int i = 0; i < myArgc; i++) {
 		string temp = s[i];
 		myArgv[i] = (char*) malloc(sizeof(temp) + 1);
+
+		//copy the string into myArgv
 		strcpy(myArgv[i], temp.c_str());
 	}
+
+	//set the last element of myArgv to null
 	myArgv[myArgc] = NULL;
 
 }
 
-template<class Item>
-void commandline<Item>::print() {
-	for (unsigned i = 0; i < myArgc; i++) {
-		cout << i << "\t" << myArgv[i] << endl;
-	}
-}
-
+/* ~commandline():
+ * frees up myArgv
+ */
 template<class Item>
 commandline<Item>::~commandline() {
-//	for (int i = 0; i < myArgc - 1; i++) {
-//		free(myArgv[i]);
-//	}
+	for (int i = 0; i < myArgc - 2; i++) {
+		free(myArgv[i]);
+	}
+
 //	free(myArgv);
 }
 
