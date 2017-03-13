@@ -5,8 +5,8 @@ the percentage of a fair share that each person contributed to the project.
 (If each person did their fair share, use 100%.) 
 
 
-NAME: Steve Sykora	100%	      FAIR SHARE PERCENTAGE (0 - 100):  
-NAME:  Nathanael Dick                 FAIR SHARE PERCENTAGE (0 - 100):  
+NAME:  Steve Sykora	   100%	    FAIR SHARE PERCENTAGE (0 - 100):  
+NAME:  Nathanael Dick  100%     FAIR SHARE PERCENTAGE (0 - 100):  
 
 
 
