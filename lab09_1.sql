@@ -97,8 +97,8 @@ Plan hash value: 3586146000
 --This took 15.64 seconds and had the same cpu costs as the query that did the addition
 --this is not surprising because there were propably fewer records that it had to process
 
-select * from
-director d join directorGenre dr on d.id+10 = dr.directorid+199;
+/* select * from
+director d join directorGenre dr on d.id+10 = dr.directorid+199; */
 --9.1.d
 --first time only ran once
 /* Elapsed: 00:00:10.76
@@ -136,7 +136,22 @@ select * from Director;
 --when I ran all three together it was much fastrer by 3 seconds than when I ran the query
 by itself note the cpu costs are the same
  */
+ --I also ran with only auto trace to try another record and runnning the query
+ --by itself took .7 seconds with 498 cpu cost
+ SET AUTOTRACE TRACEONLY;
+/* select * from Movie;
+select * from Movie;
+select * from Movie;
+select * from Movie;
+select * from Movie;
+select * from Movie;
+select * from Movie;
+select * from Movie;
+select * from Movie;
+select * from Movie;
 
+--At the end of this it only took .68 seconds so a slight improvement
+from the time when I ran it only once
 --e
 
 --create index index1 on role (movieID, actorID);
