@@ -1,0 +1,220 @@
+echo "kernel-mode code"
+
+head /usr/src/ubuntu-xenial/kernel/sys.c 
+
+/**
+ * @brief Recursively fill a task tree
+ * @param nr Number of free spaces remaining in info
+ *Reference used heavily copied parts:http://stackoverflow.com/questions/19208487/kernel-module-that-iterates-over-all-tasks-using-depth-first-tree
+ *note other referneces used
+ */
+int doTaskTree( struct task_struct * rootptr, struct task_info __user * info,
+               int nr, int level ){
+
+	//declares the variables
+  int i,j,c,k;
+  const struct cred *tcred;
+	//used reference to see we needed the list
+	//very similar approach we took
+  struct list_head *list;
+  struct task_struct *child;
+  if ( nr == 0 ){
+    // Out of memory!
+    return 0;
+  }
+
+	//gets the proper tcred for uid
+	tcred = __task_cred(rootptr);
+	
+	//gets the correct size for the comm name
+	k=sizeof(rootptr->comm);
+	if(k>63){
+		k=63;
+	}
+	
+	//sets the comm value
+  for( i = 0; i < k; i++ ){
+	info[0].comm[i] = rootptr->comm[i];  
+  }
+	
+	//sets the parts of the task struct
+  info[0].pid=rootptr->pid;  //pid of root
+  info[0].parent_pid=rootptr->parent->pid;    //parent pid
+  info[0].state=rootptr->state;				//state of pid
+  info[0].uid=tcred->uid.val;				//value of uid for the pid
+  info[0].level=level;						//gets the level for the pid
+  info[0].first_child_pid = 0;			//gets the default first child pid
+  
+	
+	//sets j
+  j = 1;
+  
+	//lists for each processNOte the following part ecspcecially we got online reference see above
+  list_for_each(list, &rootptr->children){ //TODO: figure out how to do this!
+    child=list_entry(list, struct task_struct, sibling);
+	  //sets the first child pointer
+    if(j==1){
+      info[0].first_child_pid = child->pid;
+    }
+    //increments and gets the recursive result of do task tree
+    c=doTaskTree( child, &info[j], nr - j, level + 1 );
+   //if c = 0 stop
+	  if(c==0){
+      break;
+    }
+    j +=c;
+  }
+  return j;
+}
+/**
+ * @brief defines a system call that fills the taskstruct
+ * @param info a user struct info
+ * @param nr Number of free spaces remaining in info
+ * @param rootpid the root pid
+ * this function sets the taskstruct and allows information to be passed to it in user space
+ *& *note other referneces used
+ */
+SYSCALL_DEFINE3( tasktree, struct task_info __user *, info, int, nr, int, rootpid){
+	//declare our root ptr
+	struct task_struct *root;
+	//here we declare our temporary task struct
+	struct task_info *tempinfo;
+	
+	//check if the ptr is null
+  if(info == NULL){
+	  return -EINVAL;
+  }
+	
+	//malloc space
+  tempinfo = kmalloc( nr * sizeof( struct task_info), GFP_KERNEL );
+  
+//get the specific task of the pid
+  root = find_task_by_vpid(rootpid);
+  
+	//call the doTaskTree recursive function
+  doTaskTree( root, tempinfo, nr, 0 );
+	
+	
+	//locks access
+read_lock(&tasklist_lock);
+	
+	//checks if access is valid
+		if (!access_ok(VERIFY_WRITE, info, sizeof(struct task_info))){
+	 return -EFAULT;
+}
+	//copies the result to user
+ copy_to_user( info, tempinfo, nr * sizeof( struct task_info) );
+
+//unlocks the tasklist
+	read_unlock(&tasklist_lock); 
+	
+	//free the space
+	kfree(tempinfo);
+	return 0;
+}
+
+#endif /* CONFIG_COMPAT */
+
+
+tail /usr/src/ubuntu-xenial/kernel/sys.c -n 100//note this helped us with our script not important
+
+
+tail /usr/src/ubuntu-xenial/include/linux/syscalls.h
+asmlinkage long sys_mlock2(unsigned long start, size_t len, int flags);
+
+asmlinkage long sys_mt(void);
+asmlinkage long sys_mt2(void);
+//header def
+asmlinkage long sys_tasktree(struct task_info __user *arg,int nr, int rootpid);
+
+cat /usr/src/ubuntu-xenial/include/linux/taskinfo.h
+#include <linux/pid.h>
+//#include <sys/types.h>
+struct task_info {
+ 	pid_t pid;                  /* process id */
+ 	pid_t parent_pid;           /* process id of parent */
+ 	pid_t first_child_pid;     
+ 	long state;                
+ 	unsigned int uid;     //i could change back to long              
+ 	char comm[64];              
+ 	int level;
+};
+tail /usr/src/ubuntu-xenial/arch/x86/entry/syscalls/syscall_64.tbl -n 44 | head
+
+323	common	userfaultfd		sys_userfaultfd
+324	common	membarrier		sys_membarrier
+325	common	mlock2			sys_mlock2
+326 common	mt   		    sys_mt
+327 common 	tasktree				sys_tasktree
+328 common 	mt2				sys_mt2
+echo "user-mode code"
+
+cat /usr/include/tasktree.h
+/*
+*defines the system calls
+*Nathanael Dick, Zach Decook
+*/
+
+#include <linux/kernel.h>
+#include <sys/syscall.h>
+#include <stdio.h>
+#include <unistd.h>
+
+//here we declare the struct
+struct task_info {
+ 	pid_t pid;                  /* process id */
+ 	pid_t parent_pid;           /* process id of parent */
+ 	pid_t first_child_pid;     
+ 	long state;                
+ 	unsigned int uid;                   
+ 	char comm[64];              
+  int level;
+};
+
+//here is our system call in user space
+long tasktree(){
+	//here we declare our reference to our user struct
+  struct task_info *r;
+	
+	//declare our user variables
+  int i,j;
+  int total = 70;
+  int firstpid = 1;
+	
+  //malloc space
+  r = malloc(total*sizeof(struct task_info));
+	
+	//call our system call
+  syscall(327,r,total,firstpid);
+//loop over printing out with indentations the pid etc from the taskinfo struct
+  for ( i = 0; i < total; i++ )
+  {
+	  
+	  //this gives indentation based on the level
+    for( j = 0; j < r[i].level; j++ ){
+     printf( "\t" ) ; 
+    }
+	  //checks if pid is not correct
+	  if (r[i].pid==-1) break;
+	  
+	  //prints out the correct information
+    printf( "pid %i, parent_pid %i, first_child %i, state %lu, uid %lu namd %s\n",
+      r[i].pid, r[i].parent_pid, r[i].first_child_pid, r[i].state, r[i].uid, r[i].comm);
+  }
+	free(r);
+}
+
+echo "Test program"
+
+cat /home/test2.c
+
+#include <unistd.h>
+#include <myTest.h>
+#include <myTest2.h>
+#include <tasktree.h>
+int main(int argc, char *argv[])
+{
+		tasktree();
+	return 0;
+}
+
