@@ -1,0 +1,348 @@
+echo "kernel-mode code"
+
+head /usr/src/ubuntu-xenial/kernel/sys.c 
+
+tail /usr/src/ubuntu-xenial/kernel/sys.c -n 100
+
+tail /usr/src/ubuntu-xenial/include/linux/syscalls.h
+
+cat /usr/src/ubuntu-xenial/include/linux/taskinfo.h
+
+tail /usr/src/ubuntu-xenial/arch/x86/entry/syscalls/syscall_64.tbl -n 44 | head
+
+
+echo "user-mode code"
+
+cat /usr/include/tasktree.h
+
+echo "Test program"
+
+cat /home/test2.c
+
+Result:
+
+mradmin@mradmin-VirtualBox:~$ cd /home
+mradmin@mradmin-VirtualBox:/home$ cat typescript 
+Script started on Sat 22 Apr 2017 06:03:03 PM EDT
+root@mradmin-VirtualBox:/home# make-kpkg -j 8 --initrd --append-to-version=nwd kernel-image kernel-headers     gcc -o c test2.c
+root@mradmin-VirtualBox:/home# make-kpkg -j 8 --initrd --append-to-version=nwd kernel-image kernel-headers     ./c
+pid 1, parent_pid 0, first_child 217, state 1, uid 0 namd systemd
+	pid 217, parent_pid 1, first_child 0, state 1, uid 0 namd systemd-journal
+	pid 260, parent_pid 1, first_child 0, state 1, uid 0 namd systemd-udevd
+	pid 540, parent_pid 1, first_child 0, state 1, uid 0 namd accounts-daemon
+	pid 542, parent_pid 1, first_child 0, state 1, uid 106 namd dbus-daemon
+	pid 582, parent_pid 1, first_child 740, state 1, uid 0 namd NetworkManager
+		pid 740, parent_pid 582, first_child 0, state 1, uid 0 namd dhclient
+		pid 754, parent_pid 582, first_child 0, state 1, uid 65534 namd dnsmasq
+	pid 591, parent_pid 1, first_child 0, state 1, uid 0 namd systemd-logind
+	pid 610, parent_pid 1, first_child 0, state 1, uid 0 namd cron
+	pid 614, parent_pid 1, first_child 0, state 1, uid 0 namd ModemManager
+	pid 618, parent_pid 1, first_child 0, state 1, uid 110 namd whoopsie
+	pid 622, parent_pid 1, first_child 0, state 1, uid 104 namd rsyslogd
+	pid 695, parent_pid 1, first_child 0, state 1, uid 0 namd polkitd
+	pid 719, parent_pid 1, first_child 737, state 1, uid 0 namd lightdm
+		pid 737, parent_pid 719, first_child 0, state 1, uid 0 namd Xorg
+		pid 814, parent_pid 719, first_child 825, state 1, uid 0 namd lightdm
+			pid 825, parent_pid 814, first_child 871, state 1, uid 1000 namd lxsession
+				pid 871, parent_pid 825, first_child 0, state 1, uid 1000 namd ssh-agent
+				pid 902, parent_pid 825, first_child 0, state 1, uid 1000 namd openbox
+				pid 906, parent_pid 825, first_child 1210, state 1, uid 1000 namd lxpanel
+					pid 1210, parent_pid 906, first_child 0, state 1, uid 1000 namd notepadqq-bin
+					pid 1324, parent_pid 906, first_child 0, state 1, uid 1000 namd firefox
+				pid 908, parent_pid 825, first_child 1124, state 1, uid 1000 namd pcmanfm
+					pid 1124, parent_pid 908, first_child 1125, state 0, uid 1000 namd lxterminal
+						pid 1125, parent_pid 1124, first_child 0, state 1, uid 1000 namd gnome-pty-helpe
+						pid 1126, parent_pid 1124, first_child 1153, state 1, uid 1000 namd bash
+							pid 1153, parent_pid 1126, first_child 1159, state 1, uid 0 namd sudo
+								pid 1159, parent_pid 1153, first_child 1160, state 1, uid 0 namd su
+									pid 1160, parent_pid 1159, first_child 1525, state 1, uid 0 namd bash
+										pid 1525, parent_pid 1160, first_child 1526, state 1, uid 0 namd script
+										pid 1526, parent_pid 1525, first_child 1541, state 1, uid 0 namd bash
+										pid 1541, parent_pid 1526, first_child 0, state 0, uid 0 namd c
+	pid 820, parent_pid 1, first_child 822, state 1, uid 1000 namd systemd
+		pid 822, parent_pid 820, first_child 0, state 1, uid 1000 namd (sd-pam)
+	pid 875, parent_pid 1, first_child 0, state 1, uid 1000 namd dbus-daemon
+	pid 874, parent_pid 1, first_child 0, state 1, uid 1000 namd dbus-launch
+	pid 887, parent_pid 1, first_child 0, state 1, uid 1000 namd gvfsd
+	pid 892, parent_pid 1, first_child 0, state 1, uid 1000 namd gvfsd-fuse
+	pid 912, parent_pid 1, first_child 0, state 1, uid 1000 namd ssh-agent
+	pid 914, parent_pid 1, first_child 0, state 1, uid 1000 namd xfce4-power-man
+	pid 916, parent_pid 1, first_child 0, state 1, uid 1000 namd xfconfd
+	pid 921, parent_pid 1, first_child 0, state 1, uid 1000 namd update-notifier
+	pid 932, parent_pid 1, first_child 0, state 1, uid 1000 namd nm-applet
+	pid 933, parent_pid 1, first_child 0, state 1, uid 0 namd upowerd
+	pid 938, parent_pid 1, first_child 0, state 1, uid 1000 namd light-locker
+	pid 956, parent_pid 1, first_child 0, state 1, uid 1000 namd dconf-service
+	pid 962, parent_pid 1, first_child 0, state 1, uid 1000 namd menu-cached
+	pid 977, parent_pid 1, first_child 0, state 1, uid 0 namd udisksd
+	pid 974, parent_pid 1, first_child 0, state 1, uid 1000 namd gvfs-udisks2-vo
+	pid 989, parent_pid 1, first_child 0, state 1, uid 1000 namd gvfs-afc-volume
+	pid 995, parent_pid 1, first_child 0, state 1, uid 1000 namd gvfs-mtp-volume
+	pid 997, parent_pid 1, first_child 0, state 1, uid 1000 namd indicator-appli
+	pid 1007, parent_pid 1, first_child 0, state 1, uid 1000 namd gvfs-gphoto2-vo
+	pid 1012, parent_pid 1, first_child 0, state 1, uid 1000 namd gvfs-goa-volume
+	pid 1018, parent_pid 1, first_child 0, state 1, uid 1000 namd gvfsd-trash
+	pid 1071, parent_pid 1, first_child 0, state 1, uid 109 namd ntpd
+	pid 1075, parent_pid 1, first_child 0, state 1, uid 0 namd agetty
+	pid 1354, parent_pid 1, first_child 0, state 1, uid 1000 namd gconfd-2
+root@mradmin-VirtualBox:/home# echo "kernel-mode code"
+kernel-mode code
+root@mradmin-VirtualBox:/home# 
+root@mradmin-VirtualBox:/home# head /usr/src/ubuntu-xenial/kernel/sys.c 
+/*
+ *  linux/kernel/sys.c
+ *
+ *  Copyright (C) 1991, 1992  Linus Torvalds
+ */
+
+#include <linux/taskinfo.h>
+#include <linux/sched.h>
+#include <linux/export.h>
+#include <linux/mm.h>
+root@mradmin-VirtualBox:/home# 
+root@mradmin-VirtualBox:/home# tail /usr/src/ubuntu-xenial/kernel/sys.c -n 100
+
+/**********************************************************************
+LOTS OF STUFF CUT OUT OF THE FILE. I pasted in part
+***********************************************************************/ 
+
+/**
+ * @brief Recursively fill a task tree
+ * @param nr Number of free spaces remaining in info
+ * Note Reference used heavily copied parts:http://stackoverflow.com/questions/19208487/kernel-module-that-iterates-over-all-tasks-using-depth-first-tree
+ *note other referneces used
+ */
+int doTaskTree( struct task_struct * rootptr, struct task_info __user * info,
+               int nr, int level ){
+
+	//declares the variables
+  int i,j,c,k;
+  const struct cred *tcred;
+	//used reference to see we needed the list
+	//very similar approach we took
+  struct list_head *list;
+  struct task_struct *child;
+  if ( nr == 0 ){
+    // Out of memory!
+    return 0;
+  }
+
+	//gets the proper tcred for uid
+	tcred = __task_cred(rootptr);
+	
+	//gets the correct size for the comm name
+	k=sizeof(rootptr->comm);
+	if(k>63){
+		k=63;
+	}
+	
+	//sets the comm value
+  for( i = 0; i < k; i++ ){
+	info[0].comm[i] = rootptr->comm[i];  
+  }
+	
+	//sets the parts of the task struct
+  info[0].pid=rootptr->pid;  //pid of root
+  info[0].parent_pid=rootptr->parent->pid;    //parent pid
+  info[0].state=rootptr->state;				//state of pid
+  info[0].uid=tcred->uid.val;				//value of uid for the pid
+  info[0].level=level;						//gets the level for the pid
+  info[0].first_child_pid = 0;			//gets the default first child pid
+  
+	
+	//sets j
+  j = 1;
+  
+	//lists for each processNOte the following part ecspcecially we got online reference see above
+  list_for_each(list, &rootptr->children){ //TODO: figure out how to do this!
+    child=list_entry(list, struct task_struct, sibling);
+	  //sets the first child pointer
+    if(j==1){
+      info[0].first_child_pid = child->pid;
+    }
+    //increments and gets the recursive result of do task tree
+    c=doTaskTree( child, &info[j], nr - j, level + 1 );
+   //if c = 0 stop
+	  if(c==0){
+      break;
+    }
+    j +=c;
+  }
+  return j;
+}
+/**
+ * @brief defines a system call that fills the taskstruct
+ * @param info a user struct info
+ * @param nr Number of free spaces remaining in info
+ * @param rootpid the root pid
+ * this function sets the taskstruct and allows information to be passed to it in user space
+ *& *note other referneces used
+ */
+SYSCALL_DEFINE3( tasktree, struct task_info __user *, info, int, nr, int, rootpid){
+	//declare our root ptr
+	struct task_struct *root;
+	//here we declare our temporary task struct
+	struct task_info *tempinfo;
+	
+	//check if the ptr is null
+  if(info == NULL){
+	  return -EINVAL;
+  }
+	
+	//malloc space
+  tempinfo = kmalloc( nr * sizeof( struct task_info), GFP_KERNEL );
+  
+//get the specific task of the pid
+  root = find_task_by_vpid(rootpid);
+  
+	//call the doTaskTree recursive function
+  doTaskTree( root, tempinfo, nr, 0 );
+	
+	
+	//locks access
+read_lock(&tasklist_lock);
+	
+	//checks if access is valid
+		if (!access_ok(VERIFY_WRITE, info, sizeof(struct task_info))){
+	 return -EFAULT;
+}
+	//copies the result to user
+ copy_to_user( info, tempinfo, nr * sizeof( struct task_info) );
+
+//unlocks the tasklist
+	read_unlock(&tasklist_lock); 
+	
+	//free the space
+	kfree(tempinfo);
+	return 0;
+}
+
+#endif /* CONFIG_COMPAT */
+root@mradmin-VirtualBox:/home# 
+root@mradmin-VirtualBox:/home# tail /usr/src/ubuntu-xenial/include/linux/syscalls.h
+
+/**********************************************************************
+LOTS OF STUFF CUT OUT OF THE FILE. I pasted in part
+***********************************************************************/ 
+
+asmlinkage long sys_membarrier(int cmd, int flags);
+
+asmlinkage long sys_mlock2(unsigned long start, size_t len, int flags);
+
+asmlinkage long sys_mt(void);
+asmlinkage long sys_mt2(void);
+//header def
+asmlinkage long sys_tasktree(struct task_info __user *arg,int nr, int rootpid);
+
+#endif
+root@mradmin-VirtualBox:/home# 
+root@mradmin-VirtualBox:/home# cat /usr/src/ubuntu-xenial/include/linux/taskinfo.h
+#include <linux/pid.h>
+//#include <sys/types.h>
+struct task_info {
+ 	pid_t pid;                  /* process id */
+ 	pid_t parent_pid;           /* process id of parent */
+ 	pid_t first_child_pid;     
+ 	long state;                
+ 	unsigned int uid;                   
+ 	char comm[64];              
+ 	int level;
+};root@mradmin-VirtualBox:/home# 
+root@mradmin-VirtualBox:/home# tail /usr/src/ubuntu-xenial/arch/x86/entry/syscalls/syscall_64.tbl -n 44 | head
+
+/**********************************************************************
+LOTS OF STUFF CUT OUT OF THE FILE. I pasted in part
+***********************************************************************/ 
+
+323	common	userfaultfd		sys_userfaultfd
+324	common	membarrier		sys_membarrier
+325	common	mlock2			sys_mlock2
+326 common	mt   		    sys_mt
+327 common 	tasktree				sys_tasktree
+328 common 	mt2				sys_mt2
+#
+# x32-specific system call numbers start at 512 to avoid cache impact
+# for native 64-bit operation.
+#
+root@mradmin-VirtualBox:/home# 
+root@mradmin-VirtualBox:/home# 
+root@mradmin-VirtualBox:/home# echo "user-mode code"
+user-mode code
+root@mradmin-VirtualBox:/home# 
+root@mradmin-VirtualBox:/home# cat /usr/include/tasktree.h
+/*
+*defines the system calls
+*Nathanael Dick, Zach Decook
+*/
+
+#include <linux/kernel.h>
+#include <sys/syscall.h>
+#include <stdio.h>
+#include <unistd.h>
+
+//here we declare the struct
+struct task_info {
+ 	pid_t pid;                  /* process id */
+ 	pid_t parent_pid;           /* process id of parent */
+ 	pid_t first_child_pid;     
+ 	long state;                
+ 	unsigned int uid;                   
+ 	char comm[64];              
+  int level;
+};
+
+//here is our system call in user space
+long tasktree(){
+	//here we declare our reference to our user struct
+  struct task_info *r;
+	
+	//declare our user variables
+  int i,j;
+  int total = 70;
+  int firstpid = 1;
+	
+  //malloc space
+  r = malloc(total*sizeof(struct task_info));
+	
+	//call our system call
+  syscall(327,r,total,firstpid);
+//loop over printing out with indentations the pid etc from the taskinfo struct
+  for ( i = 0; i < total; i++ )
+  {
+	  
+	  //this gives indentation based on the level
+    for( j = 0; j < r[i].level; j++ ){
+     printf( "\t" ) ; 
+    }
+	  //checks if pid is not correct
+	  if (r[i].pid==-1) break;
+	  
+	  //prints out the correct information
+    printf( "pid %i, parent_pid %i, first_child %i, state %lu, uid %lu namd %s\n",
+      r[i].pid, r[i].parent_pid, r[i].first_child_pid, r[i].state, r[i].uid, r[i].comm);
+  }
+	free(r);
+}
+root@mradmin-VirtualBox:/home# 
+root@mradmin-VirtualBox:/home# echo "Test program"
+Test program
+root@mradmin-VirtualBox:/home# 
+root@mradmin-VirtualBox:/home# cat /home/test2.c
+/*#include <unistd.h>
+int main(int argc, char *argv[]){
+long error;
+error = syscall(326);
+return 0;
+}*/
+#include <unistd.h>
+#include <myTest.h>
+#include <myTest2.h>
+#include <tasktree.h>
+int main(int argc, char *argv[])
+{
+		tasktree();
+	return 0;
+}root@mradmin-VirtualBox:/home# exit
+
+Script done on Sat 22 Apr 2017 06:04:41 PM EDT
+mradmin@mradmin-VirtualBox:/home$ 
